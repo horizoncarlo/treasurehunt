@@ -1,0 +1,185 @@
+<html>
+    <head>
+        <title>Treasure Hunt Game</title>
+        
+        <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+        <link rel="icon" href="./images/favicon.png" />  
+        <link rel="stylesheet" type="text/css" href="./css/main.css"/>
+        <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Baloo%20Tamma%202">
+    </head>
+    <body onload="init()">
+        <div id="game"></div>
+        
+        <div id="defeat" class="defeatOverlay">
+            <div class="overlayHeader">
+                You Lose
+            </div>
+            <div class="overlayContent">
+                <img src="./images/fire.gif" class="medFire"/>
+                <img id="deadImage"/>
+                <img class="townImage"/>
+                <img src="./images/fire.gif" class="medFire"/>
+                
+                <br/>
+                The monster has destroyed your town.<br/>
+                Better luck next time!</br>
+                <br/>
+                <span style="font-size: smaller;">(Restarting in 5 seconds...)</span>
+            </div>
+        </div>
+        
+        <div id="victory" class="victoryOverlay">
+            <div class="overlayHeader">
+                You Win
+            </div>
+            <div class="overlayContent">
+                <img class="townImage townLeft"/>
+                <div id="monsterRun" class="monsterRun">
+                    <img id="moveImage" style="padding-right: 100px;"/>
+                    <img id="tentacleBefore"></img>
+                    <img id="monsterLossImage" class="shake"/>
+                    <img id="tentacleAfter"></img>
+                </div>
+                <br/><br/>
+                The monster has been scared away.<br/>
+                You did a great job!</br>
+                <br/>
+                <span style="font-size: smaller;">(Restarting in 5 seconds...)</span>
+            </div>
+        </div>
+        
+        <div id="welcome" class="welcomeOverlay readable">
+            <div class="welcomeHeader">
+                <div class="sparkle">
+                    <span class="sparkleContent" data-text="Welcome to the Treasure Hunt Game">Welcome to the Treasure Hunt Game</span>
+                    <span class="spotlight"/>
+                </div>
+            </div>
+            <div class="welcomeContent">
+                <div class="tableD">
+                    <div class="trD">
+                        <div class="tdD leftWelcomeCol"><img id="welcomeIdleImage"/></div>
+                        <div class="tdD">You are a brave hero named <span id="welcomeName" class="welcomeName jump">Goofy</span> and your home is a <span class="townName">peaceful</span>&nbsp;&nbsp;town&nbsp;&nbsp;<img class="townImage" title="Home sweet home!" style="width: 48px; height: 48px;"/></div>
+                    </div><div class="trD">
+                        <div class="tdD leftWelcomeCol"><img id="monsterWelcomeImage" style="width: 48px; height: 48px;"/></div>
+                        <div class="tdD">Terrible&nbsp;&nbsp;<span id="monsterName" class="monsterName shake">monster</span>&nbsp;&nbsp;prepares to attack. Watch out for grabbing tentacles! <img src="./images/tentacle.gif" title="Touching a hazardous tentacle will slow your speed for a second" style="padding-left: 10px; max-height: 50px; filter: drop-shadow(1px 1px 5px white);"></img></div>
+                    </div><div class="trD">
+                        <div class="tdD leftWelcomeCol"><img src="./images/copper_coin-static.png" title="Copper"/>&nbsp;<img src="./images/silver_coin-static.png" title="Silver"/>&nbsp;<img src="./images/gold_coin-static.png" title="Gold"/></div>
+                        <div class="tdD">
+                            Collect <span class="coinName">coins</span> to get the monster to leave. Look for <b>Powerups</b> to help:<br/>
+                            <div style="text-align: center;">
+                                <img src="./images/powerups/campfire.gif" class="welcomePowerup" title="Campfire: Fully restore speed boost fuel"/>&nbsp;
+                                <img src="./images/powerups/banner.gif" class="welcomePowerup" title="Banner: Spook the monster away from town a bit"/>&nbsp;
+                                <img src="./images/powerups/potion.png" class="welcomePowerup" title="Potion: Big speed increase for a few seconds"/>&nbsp;
+                                <img src="./images/powerups/wormhole.png" class="welcomePowerup" title="Wormhole: Teleport to a random location on the map"/>&nbsp;
+                                <img src="./images/powerups/barrel.png" class="welcomePowerup" title="Barrel: Add a few coins to the map, sometimes more"/>&nbsp;
+                                <img src="./images/powerups/book.png" class="welcomePowerup" title="Spellbook: Pull in and collect nearby coins"/>&nbsp;
+                                <img src="./images/powerups/anvil.png" class="welcomePowerup" title="Anvil: Change nearby coins to gold"/>&nbsp;
+                                <img src="./images/powerups/mushroom.png" class="welcomePowerup" title="Mushroom: Grow your hero for little while"/>
+                            </div>
+                        </div>
+                    </div><div class="trD">
+                        <div class="tdD leftWelcomeCol" style="font-size: 1.5em;">&#9000;</div>
+                        <div class="tdD">
+                            Use <b>arrow keys</b> to move, <b>Spacebar</b> to speed boost (fueled by <img src="./images/boost.png" style="height: 15px;"></img>), <b>P</b> to Pause
+                            <br/><hr/>
+                        </div>
+                    </div>
+                    <div class="trD">
+                        <div class="tdD leftWelcomeCol">Difficulty:</div>
+                        <div id="difficultyRadios" class="tdD">
+                            <input type="radio" name="difficulty" id="easy" value="Easy" checked onclick="difficultyChanged(this.value);"><label for="easy" style="color: #880000;">Easy</label></input>
+                            <input type="radio" name="difficulty" id="medium" value="Medium" onclick="difficultyChanged(this.value);"><label for="medium" style="color: #BB0000;">Medium</label></input>
+                            <input type="radio" name="difficulty" id="hard" value="Hard" onclick="difficultyChanged(this.value);"><label for="hard" style="color: #FF0000;">Hard</label></input>
+                            <input type="radio" name="difficulty" id="random" value="Random" onclick="difficultyChanged(this.value);"><label for="random" style="color: #FFA6C9;">Random</label></input>
+                            <input type="checkbox" id="custom" onclick="clickCustomDifficulty(this.checked);"><label for="custom" style="color: #00AA00;">Customize</label></input>
+                        </div>
+                    </div>
+                    <div id="customDifficultyPanel" class="customDifficultyPanel trD" style="display: none;">
+                        <div class="tdD leftWelcomeCol" style="font-size: 1.5em; vertical-align: middle;">&#9205;</div>
+                        <div class="tdD">
+                            <fieldset>
+                                <legend>General</legend>
+                                <span class="smallNote">(Mouse over each field for details)</span><br/>
+                                <label for="points" title="How many Points of coins you need to collect to win (1,000-10,000,000)">Points to Win:</label>
+                                <input id="points" type="number" min="1000" max="10000000" size="5" step="500"/>
+                                <label for="playerSpeed" title="How fast your hero moves on the map (0.1 to 20)">Hero Speed:</label>
+                                <input id="playerSpeed" type="number" min="0.1" max="20" size="2" step="0.5"/>
+                                <label for="powerupMax" title="How many Powerups to create (0 to 8)">Powerup Count:</label>
+                                <input id="powerupMax" type="number" min="0" max="8" size="2" step="1"/>
+                                <input id="glow" type="checkbox"><label for="glow" title="Choose whether coins are more noticeable from a glow around them">Coins Glow?</label></input>
+                            </fieldset>
+                            
+                            <fieldset>
+                                <legend>Hero Boost</legend>
+                                <label for="boostMin" title="The range of extra distance your speed boost gives (0-120)">Distance:</label>
+                                <input id="boostMin" type="number" min="0" max="100" size="3" step="10"/>
+                                &nbsp;-&nbsp;
+                                <input id="boostMax" type="number" min="0" max="120" size="3" step="10"/>
+                                <label for="boostFuel" title="The max number of times you can speed boost without a recharge (0-50, 0 to turn off boost)">Max Fuel:</label>
+                                <input id="boostFuel" type="number" min="0" max="50" size="2" step="2"/>
+                                <label for="boostCurrentFuel" title="The current amount of speed boost fuel you have (0-50)">Current Fuel:</label>
+                                <input id="boostCurrentFuel" type="number" min="0" max="50" size="2" step="2"/>
+                                <label for="boostRecharge" title="How long each pip of speed boost fuel takes to recharge (1-1,000)">Cooldown:</label>
+                                <input id="boostRecharge" type="number" min="1" max="1000" size="2" step="10"/>
+                            </fieldset>
+                            
+                            <fieldset>
+                                <legend>Monster</legend>
+                                <label for="monsterMove" title="How much to slow down the monster's moves to your town (20-250, lower is harder)">Slowdown:</label>
+                                <input id="monsterMove" type="number" min="20" max="250" size="2" step="10"/>
+                                <label for="monsterHits" title="How many times the monster needs to reach your town before you lose (1-50)">Hits to Destroy:</label>
+                                <input id="monsterHits" type="number" min="1" max="50" size="2" step="1"/>
+                                <label for="monsterTurns" title="Generally how often it will take the monster to reach the town (1-100)">Ideal Turns:</label>
+                                <input id="monsterTurns" type="number" min="1" max="100" size="2" step="1"/>
+                                <label for="setback" title="How effective each coin will be in moving the monster away (1,000-50,000)">Greed:</label>
+                                <input id="setback" type="number" min="1000" max="50000" size="4" step="500"/>
+                            </fieldset>
+                            
+                            <fieldset>
+                                <legend>Hazards</legend>
+                                <label for="tentacleMin" title="How many tentacles to put on the map (0-50, 0 to turn off tentacles)">Number of Tentacles:</label>
+                                <input id="tentacleMin" type="number" min="0" max="50" size="3" step="5"/>
+                                &nbsp;-&nbsp;
+                                <input id="tentacleMax" type="number" min="0" max="50" size="3" step="5"/>
+                                <label for="tentacleTime" title="How many seconds the slow effect of a tentacle applies">Tentacle Effect Time:</label>
+                                <input id="tentacleTime" type="number" min="1" max="60" size="2" step="2"/>
+                                <label for="iframe" title="How many seconds your hero is invincible for after running into a tentacle (1-60)">Ignore Tentacle Time:</label>
+                                <input id="iframe" type="number" min="1" max="60" size="2" step="2"/>
+                            </fieldset>
+                            
+                            <fieldset>
+                                <legend>Coins</legend>
+                                <label for="autoadd" title="Limits on the number of coins on the map at once (1-500)">Count:</label>
+                                <input id="autoadd" type="number" min="1" max="10" size="2" step="1"/>
+                                &nbsp;-&nbsp;
+                                <input id="objMax" type="number" min="1" max="500" size="2" step="5"/>
+                                <label for="objChance" title="Chance that a coin will appear (0.05-1, with 1 being 100%)">Chance:</label>
+                                <input id="objChance" type="number" min="0.05" max="1" size="2" step="0.1"/>
+                                <label for="objTime" title="How often a new coin will try to appear (5-100)">Cooldown:</label>
+                                <input id="objTime" type="number" min="5" max="100" size="2" step="5"/>
+                            </fieldset>
+                        </div>
+                    </div>
+                </div>
+                <div class="buttonWrap">
+                    <button id="startButton" onclick="clickStartGame();">Start Game!</button>
+                </div>
+            </div>
+            <div class="authorNote">
+                Created by Carlo G with help from Evelyn and Charlie
+            </div>
+        </div>
+    
+        <!-- l337 Scripts -->
+        <script src="./js/difficulty.js"></script>
+        <script src="./js/util.js"></script>
+        <script src="./js/setup.js"></script>
+        
+        <script src="./js/player.js"></script>
+        <script src="./js/monster.js"></script>
+        <script src="./js/objective.js"></script>
+        
+        <script src="./js/main.js"></script>
+    </body>
+</html>

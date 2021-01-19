@@ -1,0 +1,491 @@
+html, body {
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    padding: 0;
+    overflow: hidden;
+}
+
+body {
+    background: linear-gradient(to right, #0048A0, #002758);
+    background-image: url('../images/forest_base.png');
+    background-repeat: repeat;
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -khtml-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+
+button {
+    opacity: 1;
+    font: inherit;
+    cursor: pointer;
+    font-size: 1em;
+    font-weight: bold;
+    display: inline-block;
+    text-align: center;
+    text-decoration: none;
+    height: 50px;
+    margin: 2px 0;
+    padding: 0.5em 1em;
+    border: outset 2px transparent;
+    border-radius: 4px;
+    color: black;
+    background-color: goldenrod;
+}
+
+button:hover {
+    border-color: #FFEAB8;
+    text-shadow: 0 0 10px white;
+    filter: brightness(110%);
+}
+
+input[type='radio'],
+input[type='checkbox']{
+    -ms-transform: scale(1.5);
+    -moz-transform: scale(1.5);
+    -webkit-transform: scale(1.5);
+    -o-transform: scale(1.5);
+    transform: scale(1.5);
+    margin: 5px 7px 5px 12px;
+}
+
+fieldset {
+    white-space: nowrap;
+    width: 100%;
+    margin: 10px auto 10px auto;
+    font-size: 0.9em;
+}
+
+legend {
+    font-size: 1.1em;
+    text-shadow: 2px 2px #444444;
+    text-align: center;
+    color: #00AA00;
+}
+
+.readable {
+    font-family: 'Baloo Tamma 2';
+    font-size: 1em;
+}
+
+.center {
+    text-align: center;
+}
+
+.pauseOverlay, .defeatOverlay, .victoryOverlay {
+    position: absolute;
+    top: 0px;
+    left: 0px;
+    z-index: 200;
+    font-size: 300px;
+    font-weight: bold;
+    text-shadow: 2px 2px 5px black;
+    text-align: center;
+    vertical-align: middle;
+    width: 100%;
+    height: 100%;
+    color: red;
+    background-color: white;
+    opacity: 0.5;
+}
+
+.welcomeOverlay {
+    display: none;
+    z-index: 200;
+    width: 60%;
+    margin-top: 5%;
+    margin-left: auto;
+    margin-right: auto;
+    min-height: 200px;
+    max-height: 80%;
+    overflow-y: auto;
+    border: 5px outset white;
+    border-radius: 20px 0 0 20px;
+    background-color: black;
+    opacity: 0.8;
+    color: white;
+    padding: 10px;
+}
+
+.welcomeHeader {
+    min-width: 850px;
+    font-size: 3em;
+    text-align: center;
+    vertical-align: bottom;
+}
+
+.welcomeContent {
+    font-size: 1.2em;
+}
+
+.welcomeContent img {
+    vertical-align: middle;
+}
+
+.welcomeContent .trD {
+}
+
+.welcomeContent .tdD {
+    padding-right: 15px;
+    height: 65px;
+}
+
+.welcomeContent .leftWelcomeCol {
+    text-align: center;
+    min-width: 160px;
+}
+
+.welcomeName, .townName, .monsterName, .coinName {
+    display: inline-block;
+    font-weight: bold;
+}
+
+.welcomePowerup {
+    max-height: 30px;
+    max-width: 35px;
+}
+
+.buttonWrap {
+    width: 100%;
+    text-align: center;
+}
+
+.townName {
+    color: cornflowerblue;
+    font-style: italic;
+}
+
+.monsterName {
+    color: red;
+    text-shadow: 0 0 5px red;
+}
+
+.coinName {
+    color: gold;
+    text-shadow: 1px 1px goldenrod;
+}
+
+.overlayHeader {
+    padding-top: calc(100%/10);
+}
+
+.overlayContent {
+    font-size: 40px;
+    color: black;
+    text-align: center;
+}
+
+/** backgroundObject - short name because we use a ton of them */
+.bo {
+    position: absolute;
+    z-index: 6;
+}
+
+/** objective - short name because we use a ton of them */
+.o {
+    position: absolute;
+    z-index: 15;
+    width: 32px;
+    height: 32px;
+    cursor: crosshair;
+    transition: top 1s ease-in, left 1s ease-in, opacity 0.8s;
+    border: 2px solid transparent;
+    border-radius: 20px;
+}
+
+.powerup {
+    filter: drop-shadow(0 10px 8px rgba(0, 255, 0, 0.8));
+    cursor: crosshair;
+    border: 2px solid transparent;
+}
+
+.scoreboard {
+    text-align: center;
+    color: gold;
+    font-family: monospace;
+    background-color: black;
+}
+
+.boostGaugeWrap {
+    position: absolute;
+    top: 20px;
+    left: calc(100% - 80px);
+    width: 50px;
+    height: 200px;
+    z-index: 13;
+    background-color: #DDDDDD;
+    border: 1px solid black;
+    box-shadow: 2px 2px 5px black;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.boostGauge {
+    position: absolute;
+    left: 10px;
+    bottom: 0;
+    width: 30px;
+    margin: 10px 0 10px 0;
+    vertical-align: bottom;
+    background-color: green;
+    border: 1px solid gray;
+    border-top: 2px solid blue;
+    border-radius: 0 0 5px 5px;
+    transition: background-color 0.2s;
+}
+
+.boostIcon {
+    position: absolute;
+    top: 10px;
+    left: 5px;
+    z-index: 1;
+    width: 40px;
+}
+
+.monster {
+    position: absolute;
+    left: 20px;
+    top: calc(100% - 64px);
+    z-index: 20;
+    transition: top 0.3s linear;
+}
+
+.town {
+    z-index: 14;
+}
+
+.progress, .progressDone {
+    position: absolute;
+    top: 0;
+    height: 8px;
+    z-index: 250;
+}
+
+.progress {
+    background: linear-gradient(90deg, #000000, #444444);
+}
+
+.progressDone {
+    z-index: 255;
+    background: linear-gradient(goldenrod, gold);
+}
+
+.ascent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100%;
+    text-align: center;
+    background: linear-gradient(#000040, #400000);
+}
+
+.ascent, .progressDone {
+    box-shadow: 3px 0px 6px rgba(0,0,0,0.8);
+    cursor: not-allowed;
+    opacity: 0.9;
+}
+
+.medFire {
+    width: 30px;
+    height: 40px;
+}
+
+.fire {
+    position: absolute;
+    height: 27px;
+    width: 20px;
+    opacity: 0.8;
+    z-index: 15;
+}
+
+.defeatOverlay, .victoryOverlay {
+    display: none;
+    cursor: not-allowed;
+    opacity: 0.5;
+    z-index: 210;
+    background: linear-gradient(#EE0000, #330000);
+}
+
+.defeatOverlay {
+    transition: opacity 3s linear;
+}
+
+.victoryOverlay {
+    transition: opacity 0.5s linear;
+    cursor: pointer;
+    background: linear-gradient(#0000EE, #000033);
+}
+
+.defeatOverlay .overlayHeader {
+    color: black;
+}
+
+.victoryOverlay .overlayHeader {
+    color: white;
+}
+
+.defeatOverlay .overlayContent {
+    color: black;
+}
+
+.victoryOverlay .overlayContent {
+    color: gray;
+}
+
+.monsterRun {
+    width: 200px;
+    height: 70px;
+    white-space: nowrap;
+    position: fixed;
+    margin-left: 30px;
+    transition: margin-left 7.5s ease-in;
+}
+
+.townLeft {
+    position: fixed;
+    left: 0;
+    display: inline-block;
+}
+
+.tableD {
+    display: table;
+}
+
+.trD {
+    display: table-row;
+}
+
+.tdD {
+    display: table-cell;
+}
+
+.smallNote, .authorNote {
+    font-style: italic;
+    font-size: 0.8em;
+}
+
+.authorNote {
+    text-align: right;
+}
+
+.jump {
+    animation: jump 1.5s infinite cubic-bezier(0.280, 0.840, 0.420, 1);
+}
+
+@keyframes jump {
+    0%   { transform: translateY(0); }
+    10%  { transform: translateY(0); }
+    30%  { transform: translateY(-4px); }
+    50%  { transform: translateY(0); }
+    57%  { transform: translateY(-1px); }
+    64%  { transform: translateY(0); }
+    100% { transform: translateY(0); }
+}
+
+.shake {
+    animation: shake 1.5s infinite cubic-bezier(.36,.07,.19,.97) both;
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes shake {
+    10%, 90% {
+        transform: translate3d(-1px, 0, 0);
+    }
+    
+    20%, 80% {
+        transform: translate3d(1px, 0, 0);
+    }
+    
+    30%, 50%, 70% {
+        transform: translate3d(-1px, -1px, 0);
+    }
+    
+    40%, 60% {
+        transform: translate3d(1px, 1px, 0);
+    }
+}
+
+.attack {
+    animation: attack 1.5s linear;
+    transform: translate3d(0, 0, 0);
+}
+
+@keyframes attack {
+    10%, 90% {
+        transform: translate3d(2px, 5px, 0);
+    }
+    
+    20%, 80% {
+        transform: translate3d(2px, -25px, 0);
+    }
+    
+    30%, 50%, 70% {
+        transform: translate3d(-3px, -2px, 0);
+    }
+    
+    40%, 60% {
+        transform: translate3d(3px, 2px, 0);
+    }
+}
+
+.sparkle {
+    display: inline-block;
+    position: relative;
+    overflow: hidden;
+    filter: brightness(200%);
+    vertical-align: bottom;
+}
+
+.sparkleContent {
+    background-color: black;
+    position: relative;
+    user-select: none;
+    vertical-align: bottom;
+}
+
+.sparkleContent::before {
+    content: attr(data-text);
+    position: absolute;
+    color: white;
+    filter: blur(0.02em);
+    mix-blend-mode: difference;
+}
+
+.spotlight {
+    position: absolute;
+    top: -100%;
+    left: -100%;
+    right: 0;
+    bottom: 0;
+    background: 
+        radial-gradient(
+            circle,
+            #FFDF00,
+            transparent 25%
+        ) center / 25% 25%,
+        radial-gradient(
+            circle,
+            #B87333,
+            black 25%
+        ) center / 12.5% 12.5%;
+    animation: light 5s linear infinite;
+    mix-blend-mode: color-dodge;
+}
+
+@keyframes light {
+    to {
+        transform: translate(50%, 50%);
+    }
+}
+
+.snowflake {
+  color: #fff;
+  font-size: 1em;
+  font-family: Arial;
+  text-shadow: 0 0 1px #000;
+}
+
+@-webkit-keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@-webkit-keyframes snowflakes-shake{0%{-webkit-transform:translateX(0px);transform:translateX(0px)}50%{-webkit-transform:translateX(80px);transform:translateX(80px)}100%{-webkit-transform:translateX(0px);transform:translateX(0px)}}@keyframes snowflakes-fall{0%{top:-10%}100%{top:100%}}@keyframes snowflakes-shake{0%{transform:translateX(0px)}50%{transform:translateX(80px)}100%{transform:translateX(0px)}}.snowflake{position:fixed;top:-10%;z-index:9999;-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;user-select:none;cursor:default;-webkit-animation-name:snowflakes-fall,snowflakes-shake;-webkit-animation-duration:10s,3s;-webkit-animation-timing-function:linear,ease-in-out;-webkit-animation-iteration-count:infinite,infinite;-webkit-animation-play-state:running,running;animation-name:snowflakes-fall,snowflakes-shake;animation-duration:10s,3s;animation-timing-function:linear,ease-in-out;animation-iteration-count:infinite,infinite;animation-play-state:running,running}.snowflake:nth-of-type(0){left:1%;-webkit-animation-delay:0s,0s;animation-delay:0s,0s}.snowflake:nth-of-type(1){left:10%;-webkit-animation-delay:1s,1s;animation-delay:1s,1s}.snowflake:nth-of-type(2){left:20%;-webkit-animation-delay:6s,.5s;animation-delay:6s,.5s}.snowflake:nth-of-type(3){left:30%;-webkit-animation-delay:4s,2s;animation-delay:4s,2s}.snowflake:nth-of-type(4){left:40%;-webkit-animation-delay:2s,2s;animation-delay:2s,2s}.snowflake:nth-of-type(5){left:50%;-webkit-animation-delay:8s,3s;animation-delay:8s,3s}.snowflake:nth-of-type(6){left:60%;-webkit-animation-delay:6s,2s;animation-delay:6s,2s}.snowflake:nth-of-type(7){left:70%;-webkit-animation-delay:2.5s,1s;animation-delay:2.5s,1s}.snowflake:nth-of-type(8){left:80%;-webkit-animation-delay:1s,0s;animation-delay:1s,0s}.snowflake:nth-of-type(9){left:90%;-webkit-animation-delay:3s,1.5s;animation-delay:3s,1.5s}
